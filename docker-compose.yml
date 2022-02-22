@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  database:
+    image: "postgres"
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=queries_challenge
+    volumes:
+      - "pgsqldata:/postgresql/data"
+    networks:
+      - desafio-net
+
+  app:
+    build: .
+    container_name: desafio-6
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+    networks:
+      - desafio-net
+
+networks:
+  desafio-net:
+    driver: bridge
+
+volumes:
+  pgsqldata:
+    driver: local
